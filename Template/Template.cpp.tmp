@@ -1,0 +1,4 @@
+#include "%{ $var{NAME} %}.h"
+
+void %{ lc($var{NAME}) %}_task(intptr_t exinf) {
+}
