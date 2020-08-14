@@ -13,4 +13,6 @@ extern void	motorcontroller_task(intptr_t exinf);
 }
 #endif
 
+extern void motorcontroller_initilze() ;
+
 #endif // MOTORCONTROLLER_H
