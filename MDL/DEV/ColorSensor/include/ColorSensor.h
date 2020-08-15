@@ -11,6 +11,6 @@ extern void	colorsensor_task(intptr_t exinf);
 
 #ifdef __cplusplus
 }
-#endif
 
+#endif // __cplusplus
 #endif // COLORSENSOR_H

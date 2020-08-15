@@ -1,0 +1,6 @@
+#ifndef %{ uc($var{NAME}) %}_CFG_H
+#define %{ uc($var{NAME}) %}_CFG_H
+
+
+
+#endif // %{ uc($var{NAME}) %}_CFG_H

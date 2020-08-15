@@ -9,8 +9,8 @@ extern "C" {
 
 #ifdef __cplusplus
 }
-#endif
 
 extern void button_initialize() ;
 
+#endif // __cplusplus
 #endif // BUTTON_H

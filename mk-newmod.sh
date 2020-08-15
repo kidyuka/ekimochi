@@ -20,7 +20,8 @@ fi
 
 mkdir -p ${DIR_NAME}
 mkdir -p ${DIR_NAME}/include
+mkdir -p ${DIR_NAME}/cfg
 perl ./Template/genfile.pl ./Template/Template.cpp.tmp ${DIR_NAME}/${NEW_MOD_NAME}.cpp -NAME ${NEW_MOD_NAME}
 perl ./Template/genfile.pl ./Template/Template.cfg.tmp ${DIR_NAME}/${NEW_MOD_NAME}.cfg -NAME ${NEW_MOD_NAME}
 perl ./Template/genfile.pl ./Template/Template.h.tmp   ${DIR_NAME}/include/${NEW_MOD_NAME}.h -NAME ${NEW_MOD_NAME}
-
+perl ./Template/genfile.pl ./Template/Template_cfg.h.tmp ${DIR_NAME}/cfg/${NEW_MOD_NAME}_cfg.h -NAME ${NEW_MOD_NAME}

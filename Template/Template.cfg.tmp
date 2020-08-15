@@ -1,3 +1,6 @@
 #include "%{ $var{NAME} %}.h"
 
 CRE_TSK(%{ uc($var{NAME}) %}_TASK, { TA_ACT, 0, %{ lc($var{NAME}) %}_task, TMIN_APP_TPRI + 1, STACK_SIZE, NULL });
+
+// 100ms周期でコールする
+//CRE_CYC(MOTORCONTROLLER_TASK, { TA_NULL, {TNFY_HANDLER, 0, %{ lc($var{NAME}) %}_task}, 100000, 0});

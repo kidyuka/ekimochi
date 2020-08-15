@@ -11,7 +11,8 @@ extern "C" {
 }
 #endif
 
-extern void syslog_printf(uint32_t level, char* format, ... );
-
+extern void syslog_printf(uint32_t level, const char* format, ... );
+extern int32_t abs(int32_t value);
+extern int32_t sign(int32_t value);
 
 #endif // UTIL_H

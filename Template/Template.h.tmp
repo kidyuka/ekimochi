@@ -1,3 +1,10 @@
+/**
+ * @file %{ uc($var{NAME}) %}.h
+ * @brief 簡単な説明
+ * @author 書いた人
+ * @date 日付（開始日？）
+ */
+
 #ifndef %{ uc($var{NAME}) %}_H
 #define %{ uc($var{NAME}) %}_H
 
@@ -7,10 +14,12 @@
 extern "C" {
 #endif
 
+#ifndef TOPPERS_MACRO_ONLY
 extern void	%{ lc($var{NAME}) %}_task(intptr_t exinf);
+#endif //TOPPERS_MACRO_ONLY
 
 #ifdef __cplusplus
 }
-#endif
 
+#endif // __cplusplus
 #endif // %{ uc($var{NAME}) %}_H
