@@ -1,25 +1,26 @@
 #include "Button.h"
+#include "MotorController.h"
+
+extern void drivecontroller_task_start();
 
 static void button_clicked_handler(intptr_t button) {
+    static uint32_t left = 400;
+    static uint32_t right = 400;
+    
     switch(button) {
     case ENTER_BUTTON:
-        syslog(LOG_NOTICE, "Enter button clicked.");
+        drivecontroller_task_start();
         break;
     case BACK_BUTTON:
-        syslog(LOG_NOTICE, "Back button clicked.");
         break;
     case LEFT_BUTTON:
-    	syslog(LOG_NOTICE, "Left button clicked.");
         break;
     case RIGHT_BUTTON:
-    	syslog(LOG_NOTICE, "Right button clicked.");
-        break;
+    	break;
     case UP_BUTTON:
-    	syslog(LOG_NOTICE, "Up button clicked.");
         break;
     case DOWN_BUTTON:
-    	syslog(LOG_NOTICE, "Down button clicked.");
-        break;
+    	break;
     }
 }
 

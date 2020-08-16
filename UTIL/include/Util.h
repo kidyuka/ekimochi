@@ -13,6 +13,8 @@ extern "C" {
 
 extern void syslog_printf(uint32_t level, const char* format, ... );
 extern int32_t abs(int32_t value);
+extern float fabs(float value);
 extern int32_t sign(int32_t value);
+extern int32_t strcpy(char* dest, const char* src);
 
 #endif // UTIL_H

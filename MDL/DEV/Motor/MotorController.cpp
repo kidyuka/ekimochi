@@ -1,52 +1,29 @@
 #include "MotorController.h"
 #include "Util.h"
 
+#define PWM_MAX 100
+#define PWM_MIN -100
+#define SPEED_CONTROL_INTERVAL (50)
+#define MOTOR_PID_KP 0.1
+#define MOTOR_PID_KI 0
+#define MOTOR_PID_KD 0
+#define MOTOR_INIT_PWM 20
+
 /**
  * Define the connection ports of the gyro sensor and motors.
  * By default, the Gyro Boy robot uses the following ports:
  * Left motor:  Port C
  * Right motor: Port B
  */
-static const motor_port_t left_motor = EV3_PORT_C, right_motor = EV3_PORT_B;
-
-#define PWM_MAX 100
-#define PWM_MIN -100
-#define SPEED_CONTROL_INTERVAL (100)
-#define MOTOR_PID_KP 0.1
-#define MOTOR_PID_KI 0.01
-#define MOTOR_PID_KD 0
-#define MOTOR_INIT_PWM 20
-
-#define white 40
-#define black 20
-
 MotorController gLeftMotor(EV3_PORT_C);
 MotorController gRightMotor(EV3_PORT_B);
 
 void motorcontroller_task(intptr_t exinf) {
-
-    static float lasterror = 0, integral = 0;
-    static float midpoint = (white - black) / 2 + black;
-    static uint32_t count = 0;
-
     while(true) {
-        float error = midpoint - ev3_color_sensor_get_reflect(EV3_PORT_1);
-        integral = error + integral * 0.05;
-        float steer = 0.7 * error + 0.1 * integral + 1 * (error - lasterror);
-        
-        gLeftMotor.setTargetSpeed(500);
-        gRightMotor.setTargetSpeed(500);
-
         gLeftMotor.runTask();
         gRightMotor.runTask();
-
-        lasterror = error;
-        tslp_tsk(100000); /* 100msec */
+        tslp_tsk(SPEED_CONTROL_INTERVAL * 1000); /* マイクロ秒で指定 */
     }
-    // if(count++ % 10 == 0) {
-    //     syslog_printf(LOG_NOTICE, "error: %f, steer: %f", error, steer);
-    // }
-    //tslp_tsk(100000); /* 100msec */
 }
 
 void motorcontroller_initilze() {
@@ -59,8 +36,7 @@ void motorcontroller_initilze() {
     act_tsk(MOTORCONTROLLER_TASK);
 }
 
-MotorController::MotorController(motor_port_t port)
-{
+MotorController::MotorController(motor_port_t port) {
     mPort = port;
 }
 

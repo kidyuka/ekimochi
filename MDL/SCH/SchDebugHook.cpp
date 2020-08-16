@@ -10,7 +10,7 @@ void scheduler_debug_5sec_hook() {
 }
 
 void scheduler_debug_1sec_hook() {
-    gLeftMotor.debug();
+    
 }
 
 void scheduler_debug_100ms_hook() {

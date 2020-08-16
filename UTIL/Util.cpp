@@ -19,6 +19,18 @@ int32_t abs(int32_t value) {
     return (value > 0) ? value : -value;
 }
 
+float fabs(float value) {
+    return (value > 0) ? value : -value;
+}
+
 int32_t sign(int32_t value) {
     return (value > 0) ? 1 : -1;
+}
+
+int32_t strcpy(char* dest, const char* src) {
+    const char* org = src;
+    while(*src != 0) {
+        *dest++ = *src++;
+    }
+    return src - org;
 }

@@ -42,8 +42,9 @@ public:
      * @brief  要約説明
      * @return モータ回転カウント値
      */
-    int32_t getCount() {
-        return mPrevCount;
+    void getCount(int32_t* count, SYSTIM* time) {
+        *count = mPrevCount;
+        *time = mPrevTime;
     }
 
     /**
@@ -52,8 +53,8 @@ public:
      */
     void setTargetSpeed(uint32_t speed) {
         mTargetSpeed = speed;
-        mDeviation = 0;
-        mIntegral  = 0;
+        //mDeviation = 0;
+        //mIntegral  = 0;
     }
 
     /**
@@ -62,22 +63,6 @@ public:
     int32_t getTargetSpeed() {
         return mTargetSpeed;
     }
-
-    /**
-     * @fn モータ回転速度の取得
-     */
-    int32_t getSpeed() {
-        return mSpeed;
-    }
-
-    /**
-     * @fn PWM出力値を取得
-     */
-    float getPwmOutput() {
-        return mOutput;
-    }
-
-
 };
 
 extern MotorController gLeftMotor;
