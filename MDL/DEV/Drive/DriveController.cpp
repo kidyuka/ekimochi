@@ -20,27 +20,12 @@ void drivecontroller_task(intptr_t exinf) {
     float lasterror = 0, integral = 0;
     float midpoint = 19;
     uint32_t count = 0;
-    uint8_t sensor, last_sensor;
-    bool virtual_line = false;
+    uint8_t sensor;
 
-    last_sensor = lasterror = ev3_color_sensor_get_reflect(EV3_PORT_1);
+    lasterror = ev3_color_sensor_get_reflect(EV3_PORT_1);
     integral = lasterror * 0.5;
     while(true) {
         uint8_t sensor = ev3_color_sensor_get_reflect(EV3_PORT_1);
-
-        if(virtual_line == true && sensor < 10) {
-            virtual_line = false;
-        }
-
-        if(last_sensor < 10 && sensor > 20) {
-            //ラインをまたいだと判定
-            last_sensor = sensor;
-            sensor = 0;
-            virtual_line = true;
-        } else {
-            last_sensor = sensor;
-        }
-
         float error = midpoint - sensor;
         integral = error * 0.5 + integral * 0.5;
         float steer = error * 0.2 + integral + (error - lasterror) * 1.5;
@@ -60,8 +45,8 @@ void drivecontroller_task(intptr_t exinf) {
         tslp_tsk(100 * 1000); /* 100msec */
         if(count++ % 1 == 0) {
             syslog_printf(LOG_NOTICE, 
-                "sesor: %d, error: %f, steer: %f, r: %f, v: %d",
-                sensor, error, steer, rate, (uint32_t)virtual_line);
+                "sesor: %d, error: %f, steer: %f, r: %f",
+                sensor, error, steer, rate);
         }
     }
 }

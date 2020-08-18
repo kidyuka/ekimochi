@@ -16,5 +16,7 @@ extern int32_t abs(int32_t value);
 extern float fabs(float value);
 extern int32_t sign(int32_t value);
 extern int32_t strcpy(char* dest, const char* src);
+extern void memset(char* ptr, int value, uint32_t size) ;
+
 
 #endif // UTIL_H

@@ -1,7 +1,6 @@
 APPL_ASMOBJS :=
 
 SRCLANG := c++
-DUMMY := $(echo "**debug**")
 
 # ev3 のビルド処理の概要
 #１．Makeコマンド実行時の作業ディレクトリを得る
@@ -18,6 +17,7 @@ DUMMY := $(echo "**debug**")
 # なお、Makefile.img はサブディレクトリ以下のソースをビルド対象に含むためのルールを追加している。
 MKFILE_DIR := $(APPLDIR)
 
+# APLLDIRは初回呼び出し時しか定義されていないので、初回呼び出しか否かの判定に利用する
 ifdef APPLDIR
 	# サブディレクトリの cfgファイルを抽出
 	_APPCFGS := $(shell find $(APPLDIR) ! -name app.cfg -name *.cfg -printf '%P ')

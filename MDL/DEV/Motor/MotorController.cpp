@@ -1,5 +1,6 @@
 #include "MotorController.h"
 #include "Util.h"
+#include "Logger.h"
 
 #define PWM_MAX 100
 #define PWM_MIN -100
@@ -54,8 +55,8 @@ void MotorController::initilize() {
 }
 
 void MotorController::debug() {
-    syslog_printf(LOG_NOTICE,
-        "Port: %d, TargetSpeed: %d, Speed: %d, PWM: %f",
+    DebugLog.write(
+        "Port: %d, TargetSpeed: %d, Speed: %d, PWM: %f\n",
         mPort, mTargetSpeed, mSpeed, mOutput);
 }
 

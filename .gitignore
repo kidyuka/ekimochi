@@ -1,2 +1,5 @@
 .vscode/
 subapp.list
+UTIL/cfg/logger_cfg.cpp
+UTIL/cfg/logger_cfg.h
+memory_mmap.txt

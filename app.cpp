@@ -3,6 +3,7 @@
 #include "app.h"
 
 #include "Util.h"
+#include "Logger.h"
 
 #define DEBUG
 
@@ -13,6 +14,5 @@
 #endif
 
 void main_task(intptr_t unused) {
-    char* dest = (char*)(0x30000000);
-    strcpy(dest, "hello world!");
+    DebugLog.write("hello world!\n");
 }

@@ -34,3 +34,7 @@ int32_t strcpy(char* dest, const char* src) {
     }
     return src - org;
 }
+
+void memset(char* ptr, int value, uint32_t size) {
+
+}
