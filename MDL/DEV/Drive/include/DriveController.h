@@ -23,5 +23,12 @@ extern void	drivecontroller_task(intptr_t exinf);
 
 extern void drivecontroller_task_start();
 
+class DriveController {
+public:
+    virtual bool start() = 0;
+    virtual bool stop(bool motor_brake) = 0;
+    virtual bool setSpeed(int speed) = 0;
+};
+
 #endif // __cplusplus
 #endif // DRIVECONTROLLER_H
