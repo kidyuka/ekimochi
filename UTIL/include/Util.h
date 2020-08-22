@@ -12,11 +12,30 @@ extern "C" {
 #endif
 
 extern void syslog_printf(uint32_t level, const char* format, ... );
-extern int32_t abs(int32_t value);
-extern float fabs(float value);
-extern int32_t sign(int32_t value);
 extern int32_t strcpy(char* dest, const char* src);
-extern void memset(char* ptr, int value, uint32_t size) ;
 
+inline int32_t abs(int32_t value) {
+    return (value > 0) ? value : -value;
+}
+
+inline float fabs(float value) {
+    return (value > 0) ? value : -value;
+}
+
+inline int32_t sign(int32_t value) {
+    return (value > 0) ? 1 : -1;
+}
+
+inline void memset(char* dest, int value, uint32_t size) {
+    while(size--) {
+        *dest++ = value;
+    }
+}
+
+inline void memcpy(uint8_t* dest, const uint8_t* src, uint32_t size) {
+    while(size--) {
+        *dest++ = *src++;
+    }
+}
 
 #endif // UTIL_H

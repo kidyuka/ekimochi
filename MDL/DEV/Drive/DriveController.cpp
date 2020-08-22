@@ -8,8 +8,8 @@
 #define black 0
 
 #define SPEED 150
-#define R_RATE  2.5
-#define L_RATE  2.0
+#define R_RATE  3
+#define L_RATE  2.5
 
 void drivecontroller_task_start() {
     act_tsk(DRIVECONTROLLER_TASK);
@@ -25,7 +25,7 @@ void drivecontroller_task(intptr_t exinf) {
     lasterror = ev3_color_sensor_get_reflect(EV3_PORT_1);
     integral = lasterror * 0.5;
     while(true) {
-        uint8_t sensor = ev3_color_sensor_get_reflect(EV3_PORT_1);
+        sensor = ev3_color_sensor_get_reflect(EV3_PORT_1);
         float error = midpoint - sensor;
         integral = error * 0.5 + integral * 0.5;
         float steer = error * 0.2 + integral + (error - lasterror) * 1.5;
@@ -43,7 +43,7 @@ void drivecontroller_task(intptr_t exinf) {
 
         lasterror = error;
         tslp_tsk(100 * 1000); /* 100msec */
-        if(count++ % 1 == 0) {
+        if(count++ % 10 == 0) {
             syslog_printf(LOG_NOTICE, 
                 "sesor: %d, error: %f, steer: %f, r: %f",
                 sensor, error, steer, rate);

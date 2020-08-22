@@ -1,7 +1,7 @@
 #include "Button.h"
 #include "MotorController.h"
-
-extern void drivecontroller_task_start();
+#include "DriveController.h"
+#include "ColorSensor.h"
 
 static void button_clicked_handler(intptr_t button) {
     static uint32_t left = 400;
@@ -10,6 +10,7 @@ static void button_clicked_handler(intptr_t button) {
     switch(button) {
     case ENTER_BUTTON:
         drivecontroller_task_start();
+        colorsensor_task_start();
         break;
     case BACK_BUTTON:
         break;

@@ -5,9 +5,9 @@
 #define PWM_MAX 100
 #define PWM_MIN -100
 #define SPEED_CONTROL_INTERVAL (50)
-#define MOTOR_PID_KP 0.1
-#define MOTOR_PID_KI 0
-#define MOTOR_PID_KD 0
+#define MOTOR_PID_KP 0.15
+#define MOTOR_PID_KI 0.0
+#define MOTOR_PID_KD 0.0
 #define MOTOR_INIT_PWM 20
 
 /**

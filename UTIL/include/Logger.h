@@ -17,16 +17,16 @@ public:
 
 class BinaryLogger {
 private:
-    char* mHead;
-    char* mPtr;
-    uint32_t mSize;
+    uint32_t* mHead;
+    uint8_t*  mPtr;
+    uint32_t  mSize;
+protected:
+    bool _write(const void* src, uint32_t size);
 public:
-    BinaryLogger(uint32_t addr, uint32_t size, uint32_t unit_size);
+    BinaryLogger(uint32_t addr, uint32_t size);
     ~BinaryLogger();
-
-    bool write(const char* src);
 };
 
-#include "../cfg/logger_cfg.h"
+#include "../cfg/logger_cfg.inc"
 
 #endif

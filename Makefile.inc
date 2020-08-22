@@ -25,6 +25,9 @@ ifdef APPLDIR
 	# cfgファイルのリストを作成
 	_DUMMY := $(shell echo > $(APPLDIR)/subapp.list)
 	_DUMMY := $(foreach item, $(_APPCFGS), $(shell echo 'INCLUDE("'$(item)'");' >> $(APPLDIR)/subapp.list))
+
+	# log出力用のクラスを自動生成
+	_DUMMY := $(shell perl $(APPLDIR)/gen-logger-cfg.pl)
 endif
 
 # 上記ビルド処理概要の「８」では APPLDIR 未定義になっている
@@ -45,4 +48,3 @@ ifdef USE_CXX
 else
 	APPL_COBJS += $(_COBJS)
 endif
-

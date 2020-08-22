@@ -21,5 +21,7 @@ extern void	drivecontroller_task(intptr_t exinf);
 #ifdef __cplusplus
 }
 
+extern void drivecontroller_task_start();
+
 #endif // __cplusplus
 #endif // DRIVECONTROLLER_H
