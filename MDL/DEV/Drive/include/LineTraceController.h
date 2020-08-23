@@ -17,15 +17,29 @@
 // ライントレース処理の定期処理関数
 void linetrace_controller_task();
 
-class LineTraceController : public DriveController {
+class LineTraceController {
 private:
-    LineTraceController();
-public:
-    static LineTraceController& getInstance() ;
+    bool  mRequested;
+    float mTargetValue;
+    float mDeviation;
+    float mIntegral;
+    float mOutput;
 
+public:
+    LineTraceController();
+
+    // @brief 制御を開始する。
     bool start();
+
+    // @brief モータの回転を即座に止めるか、惰性で回転させるままにするかを指定
+    // @param motor_brake false:即時停止 true:惰性
     bool stop(bool motor_brake);
-    bool setSpeed(int speed);
+
+    // @brief 制御の基準速度を指定する。 
+    // @param speed 1秒あたり進む距離をmmで指定
+    void setSpeed(int speed) ;
+
+    void runTask();
 };
 
 

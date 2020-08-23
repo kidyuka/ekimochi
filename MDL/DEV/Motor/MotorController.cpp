@@ -52,6 +52,7 @@ void MotorController::initilize() {
     ev3_motor_stop(mPort, false);
     mRunning = false;
     mOutput = 0;
+    mReqBrake = false;
 }
 
 void MotorController::debug() {
@@ -74,8 +75,9 @@ void MotorController::runTask() {
     if(mTargetSpeed == 0) {
         // 速度0 が要求値の場合はモータを停止
         if(mRunning) {
-            ev3_motor_stop(mPort, false);
+            ev3_motor_stop(mPort, mReqBrake);
             mRunning = false;
+            mReqBrake = false;
         }
     } else if(mRunning == false) {
         // モータをまだ動かしていない場合は、初速設定に基づいてPWM値を設定

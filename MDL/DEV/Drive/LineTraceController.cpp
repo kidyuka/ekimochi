@@ -1,20 +1,52 @@
 #include "DriveController.h"
 #include "LineTraceController.h"
 #include "cfg/DriveController_cfg.h"
-
-#include "MotorController.h"
 #include "Util.h"
 
-void linetrace_controller_task() {
+#define R_RATE  3
+#define L_RATE  2.5
+
+bool LineTraceController::mRequested = false;
+
+void LineTraceController::runTask() {
+    float P, I, D;
+
+    // ライントレース制御に要求が無ければ、何もしない。
+    if(mRequested == false)
+        return;
+
+    P = mTargetValue - ev3_color_sensor_get_reflect(EV3_PORT_1);
+    I = mIntegral + P;
+    D = P - mDeviation;
+
+    mDeviation = P;
+    mIntegral  = I;
+    mOutput += (LINETRACE_PID_KP * P) + (LINETRACE_PID_KI * I) + (LINETRACE_PID_KD * D);
+
+    if(mOutput > PWM_MAX) {
+        mOutput = PWM_MAX;
+    } else if(mOutput < PWM_MIN) {
+        mOutput = PWM_MIN;
+    }
+    
+    gDriveController.setSteer((int)mOutput);
+}
+
 #if 0
+void LineTraceController::runTask()  {
+
     float lasterror = 0, integral = 0;
     float midpoint = 19;
     uint32_t count = 0;
     uint8_t sensor;
 
-    lasterror = ev3_color_sensor_get_reflect(EV3_PORT_1);
-    integral = lasterror * 0.5;
-    while(true) {
+    // ライントレース制御に要求が無ければ、何もしない。
+    if(mRequested == false)
+        return;
+
+    mDeviation = mTargetValue - ev3_color_sensor_get_reflect(EV3_PORT_1);
+    integral = mDeviation * 0.5;
+    while(linetrace_requested) {
         sensor = ev3_color_sensor_get_reflect(EV3_PORT_1);
         float error = midpoint - sensor;
         integral = error * 0.5 + integral * 0.5;
@@ -23,12 +55,12 @@ void linetrace_controller_task() {
 
         if(steer > 0.00) {
             rate = (100.0 - fabs(steer) * R_RATE) / 100.0;
-            gLeftMotor.setTargetSpeed(SPEED);
-            gRightMotor.setTargetSpeed(SPEED * rate);
+            gLeftMotor.setTargetSpeed(linetrace_requested_speed);
+            gRightMotor.setTargetSpeed(linetrace_requested_speed * rate);
         } else {
             rate = (100.0 - fabs(steer) * L_RATE) / 100.0;
-            gLeftMotor.setTargetSpeed(SPEED * rate);
-            gRightMotor.setTargetSpeed(SPEED);
+            gLeftMotor.setTargetSpeed(linetrace_requested_speed * rate);
+            gRightMotor.setTargetSpeed(linetrace_requested_speed);
         }
 
         lasterror = error;
@@ -39,26 +71,34 @@ void linetrace_controller_task() {
                 sensor, error, steer, rate);
         }
     }
-#endif
 }
+#endif
 
 LineTraceController::LineTraceController() {
-}
-
-LineTraceController& LineTraceController::getInstance() {
-    static LineTraceController obj;
-    return obj;
+    mRequested = false;
 }
 
 bool LineTraceController::start() {
+    mRequested = true;
+    // 課題 カラーセンサーのキャリブレーション結果を反映する
+    // そもそも黒以外の色にも対応させる必要がある。
+    mTargetValue = 19;
+    mDeviation = 0;
+    mIntegral = 0;
+    mOutput = 0;
 
+    gDriveController.start();
     return true;
 }
 
 bool LineTraceController::stop(bool motor_brake) {
+    mRequested = true;
+    gDriveController.stop(motor_brake);
     return true;
 }
 
-bool LineTraceController::setSpeed(int speed) {
-    return true;
+void LineTraceController::setSpeed(int speed) {
+    mRequested = true;
+    gDriveController.setSpeed(speed);
+    return;
 }

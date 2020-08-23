@@ -17,6 +17,7 @@ extern void motorcontroller_initilze() ;
 class MotorController {
 private:
     motor_port_t mPort;
+    bool    mReqBrake;
     int32_t mTargetSpeed;
     int32_t mSpeed;
     int32_t mPrevCount;
@@ -51,8 +52,9 @@ public:
      * @fn モータ回転速度の目標値を設定
      * @brief 1秒あたりの回転角度を設定
      */
-    void setTargetSpeed(uint32_t speed) {
+    void setTargetSpeed(uint32_t speed, bool brake = false) {
         mTargetSpeed = speed;
+        mReqBrake = brake;
         //mDeviation = 0;
         //mIntegral  = 0;
     }
