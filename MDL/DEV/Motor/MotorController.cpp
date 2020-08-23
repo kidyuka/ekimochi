@@ -4,11 +4,12 @@
 
 #define PWM_MAX 100
 #define PWM_MIN -100
-#define SPEED_CONTROL_INTERVAL (50)
+#define SPEED_CONTROL_INTERVAL (25)
 #define MOTOR_PID_KP 0.15
-#define MOTOR_PID_KI 0.0
-#define MOTOR_PID_KD 0.0
+#define MOTOR_PID_KI 0.00
+#define MOTOR_PID_KD 0.00
 #define MOTOR_INIT_PWM 20
+#define MOTOR_DESCOUT 0.5
 
 /**
  * Define the connection ports of the gyro sensor and motors.
@@ -21,8 +22,8 @@ MotorController gRightMotor(EV3_PORT_B);
 
 void motorcontroller_task(intptr_t exinf) {
     while(true) {
-        gLeftMotor.runTask();
-        gRightMotor.runTask();
+        //gLeftMotor.runTask();
+        //gRightMotor.runTask();
         tslp_tsk(SPEED_CONTROL_INTERVAL * 1000); /* マイクロ秒で指定 */
     }
 }
@@ -33,8 +34,7 @@ void motorcontroller_initilze() {
     gLeftMotor.initilize();
     gRightMotor.initilize();
 
-    syslog(LOG_NOTICE, "#### motor control start");
-    act_tsk(MOTORCONTROLLER_TASK);
+    //act_tsk(MOTORCONTROLLER_TASK);
 }
 
 MotorController::MotorController(motor_port_t port) {
@@ -110,7 +110,7 @@ void MotorController::controlPWM(int32_t deviation) {
     float P, I, D;
     
     P = deviation;
-    I = mIntegral + P;
+    I = mIntegral * MOTOR_DESCOUT + P * (1.0 - MOTOR_DESCOUT);
     D = P - mDeviation;
 
     mDeviation = P;

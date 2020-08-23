@@ -55,8 +55,6 @@ public:
     void setTargetSpeed(uint32_t speed, bool brake = false) {
         mTargetSpeed = speed;
         mReqBrake = brake;
-        //mDeviation = 0;
-        //mIntegral  = 0;
     }
 
     /**

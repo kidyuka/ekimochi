@@ -1,6 +1,7 @@
 #include "Button.h"
 #include "MotorController.h"
 #include "DriveController.h"
+#include "LineTraceController.h"
 #include "ColorSensor.h"
 
 static void button_clicked_handler(intptr_t button) {
@@ -9,16 +10,30 @@ static void button_clicked_handler(intptr_t button) {
     
     switch(button) {
     case ENTER_BUTTON:
+
+        gLineTraceController.setSpeed(400);
+        gLineTraceController.start();
+        //gDriveController.reqTurn(100);
+        //gDriveController.setSpeed(500);
+        //gDriveController.setSteer(0);
+        break;
+    case BACK_BUTTON:
         drivecontroller_task_start();
         colorsensor_task_start();
         break;
-    case BACK_BUTTON:
-        break;
     case LEFT_BUTTON:
+        gLineTraceController.stop(false);
+        gDriveController.setSpeed(350);
+        gDriveController.setCurvature(-300);
         break;
     case RIGHT_BUTTON:
+        gLineTraceController.stop(false);
+        gDriveController.setSpeed(350);
+        gDriveController.setCurvature(300);
     	break;
     case UP_BUTTON:
+        gDriveController.setSpeed(500);
+        gDriveController.reqTurn(1);
         break;
     case DOWN_BUTTON:
     	break;

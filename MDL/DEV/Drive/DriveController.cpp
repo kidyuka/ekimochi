@@ -24,7 +24,9 @@ void drivecontroller_task(intptr_t exinf) {
     while(true) {
         gLineTraceController.runTask();
         gDriveController.runTask();
-        tslp_tsk(100 * 1000);
+        gLeftMotor.runTask();
+        gRightMotor.runTask();
+        tslp_tsk(25 * 1000);
     }
 }
 
@@ -108,7 +110,7 @@ void DriveController::setSteer(int steer) {
     if(steer == 0) {
         setCurvature(DRIVECTL_STRAIGHT);
     } else {
-        int s = DRIVECTL_CURVE_MAX + STEER_RATE * (100 - steer);
+        int s = DRIVECTL_CURVE_MAX + STEER_RATE * (100 - abs(steer));
         if(steer > 0) {
             setCurvature(s);
         } else {
