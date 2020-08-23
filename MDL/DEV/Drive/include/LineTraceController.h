@@ -14,9 +14,6 @@
 
 #include "DriveController.h"
 
-// ライントレース処理の定期処理関数
-void linetrace_controller_task();
-
 class LineTraceController {
 private:
     bool  mRequested;
@@ -42,6 +39,7 @@ public:
     void runTask();
 };
 
+extern LineTraceController gLineTraceController;
 
 #endif // __cplusplus
 #endif // LINETRACECONTROLLER_H

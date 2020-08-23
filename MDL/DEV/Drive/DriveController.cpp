@@ -22,8 +22,7 @@ void drivecontroller_task_start() {
 
 void drivecontroller_task(intptr_t exinf) {
     while(true) {
-        linetrace_controller_task();
-
+        gLineTraceController.runTask();
         gDriveController.runTask();
         tslp_tsk(100 * 1000);
     }
@@ -51,7 +50,7 @@ void DriveController::runTask() {
             gRightMotor.setTargetSpeed(mSpeed);
         }     
 
-    } else if(mSteer == 0) {
+    } else if(mSteer == DRIVECTL_STRAIGHT) {
         gLeftMotor.setTargetSpeed(mSpeed);
         gRightMotor.setTargetSpeed(mSpeed);
 
@@ -98,7 +97,27 @@ void DriveController::setSpeed(int speed) {
     mRequested = true;
 }
 
+#define STEER_RATE ((DRIVECTL_CURVE_MIN - DRIVECTL_CURVE_MAX) / 100)
 void DriveController::setSteer(int steer) {
+    if(steer > DRIVECTL_STEER_MAX) {
+        steer = DRIVECTL_STEER_MAX;
+    } else if(steer < DRIVECTL_STEER_MIN) {
+        steer = DRIVECTL_STEER_MIN;
+    }
+
+    if(steer == 0) {
+        setCurvature(DRIVECTL_STRAIGHT);
+    } else {
+        int s = DRIVECTL_CURVE_MAX + STEER_RATE * (100 - steer);
+        if(steer > 0) {
+            setCurvature(s);
+        } else {
+            setCurvature(-s);
+        }
+    }
+}
+
+void DriveController::setCurvature(int steer) {
     mSteer = steer;
     mRequested = true;
 }

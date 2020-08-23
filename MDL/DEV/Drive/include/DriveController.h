@@ -44,14 +44,21 @@ public:
     // @param speed 1秒あたり進む距離をmmで指定
     void setSpeed(int speed) ;
 
-    // @param steer 回転半径(mm)で指定。正で右曲がり、負で左曲がり
+    // @param steer 100(右) から -100(左)でカーブ量を指定。0で直進。
     void setSteer(int steer) ;
+
+    // @param curve 回転半径(mm)で指定。正で右曲がり、負で左曲がり
+    void setCurvature(int curve);
 
     // @param speed その場で回転するスピード
     void reqTurn(int speed);
 
     void runTask();
 };
+
+#define DRIVECTL_STRAIGHT INT_MAX
+#define DRIVECTL_STEER_MAX 100
+#define DRIVECTL_STEER_MIN -100
 
 extern DriveController gDriveController;
 

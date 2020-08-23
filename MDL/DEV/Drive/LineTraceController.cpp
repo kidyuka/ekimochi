@@ -6,7 +6,7 @@
 #define R_RATE  3
 #define L_RATE  2.5
 
-bool LineTraceController::mRequested = false;
+LineTraceController gLineTraceController;
 
 void LineTraceController::runTask() {
     float P, I, D;
@@ -23,13 +23,13 @@ void LineTraceController::runTask() {
     mIntegral  = I;
     mOutput += (LINETRACE_PID_KP * P) + (LINETRACE_PID_KI * I) + (LINETRACE_PID_KD * D);
 
-    if(mOutput > PWM_MAX) {
-        mOutput = PWM_MAX;
-    } else if(mOutput < PWM_MIN) {
-        mOutput = PWM_MIN;
+    if(mOutput > DRIVECTL_STEER_MAX) {
+        mOutput = DRIVECTL_STEER_MAX;
+    } else if(mOutput < DRIVECTL_STEER_MIN) {
+        mOutput = DRIVECTL_STEER_MIN;
     }
     
-    gDriveController.setSteer((int)mOutput);
+    gDriveController.setSteer(mOutput);
 }
 
 #if 0

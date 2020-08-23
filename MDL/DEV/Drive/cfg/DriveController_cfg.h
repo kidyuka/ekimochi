@@ -11,10 +11,16 @@
  */
 #define TREAD_SIZE (145)
 
+// 最も急なカーブの回転半径を設定する(mm)
+#define DRIVECTL_CURVE_MAX 200
+// 最も緩いカーブの回転半径を設定する(mm)
+// ※直線走行時の車体方向調整の最小値を想定
+#define DRIVECTL_CURVE_MIN 1500
+
+
 // ライントレースのPID
-#define LINETRACE_PID_KP
-#define LINETRACE_PID_KI
-#define LINETRACE_PID_KD
-#define LINETRACE_STEER_MAX
+#define LINETRACE_PID_KP 0.5
+#define LINETRACE_PID_KI 0.5
+#define LINETRACE_PID_KD 0.1
 
 #endif // DRIVECONTROLLER_CFG_H
