@@ -22,8 +22,13 @@ private:
     float mIntegral;
     float mOutput;
 
+    const float mKP;
+    const float mKI;
+    const float mKD;
+    const float mDISCOUNT;
+
 public:
-    LineTraceController();
+    LineTraceController(float KP, float KI, float KD, float I_DISCOUNT);
 
     // @brief 制御を開始する。
     bool start();

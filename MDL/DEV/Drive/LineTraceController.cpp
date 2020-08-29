@@ -3,7 +3,10 @@
 #include "cfg/DriveController_cfg.h"
 #include "Util.h"
 
-LineTraceController gLineTraceController;
+// 直線・カーブ 両方に対応のライントレーサー
+LineTraceController gLineTraceController(
+    LINETRACE_PID_KP,LINETRACE_PID_KI,LINETRACE_PID_KD,LINETRACE_PID_DISCOUNT
+);
 
 void LineTraceController::runTask() {
     float P, I, D;
@@ -15,12 +18,12 @@ void LineTraceController::runTask() {
 
     sensor = ev3_color_sensor_get_reflect(EV3_PORT_1);
     P = mTargetValue - sensor;
-    I = mIntegral * LINETRACE_PID_DISCOUNT + P * (1.0 - LINETRACE_PID_DISCOUNT);
+    I = mIntegral * mDISCOUNT + P * (1.0 - mDISCOUNT);
     D = P - mDeviation;
 
     mDeviation = P;
     mIntegral  = I;
-    mOutput = (LINETRACE_PID_KP * P) + (LINETRACE_PID_KI * I) + (LINETRACE_PID_KD * D);
+    mOutput = (mKP * P) + (mKI * I) + (mKD * D);
 
     if(mOutput > DRIVECTL_STEER_MAX) {
         mOutput = DRIVECTL_STEER_MAX;
@@ -29,9 +32,8 @@ void LineTraceController::runTask() {
     }
     
     gDriveController.setSteer(mOutput);
-
-    static int count = 0;
 #if 0
+    static int count = 0;
     if(count++ % 20 == 0)
     syslog_printf(LOG_NOTICE, 
         "error: %f, steer: %f",
@@ -39,7 +41,9 @@ void LineTraceController::runTask() {
 #endif
 }
 
-LineTraceController::LineTraceController() {
+LineTraceController::LineTraceController(float KP, float KI, float KD, float I_DISCOUNT)
+    : mKP(KP), mKI(KI), mKD(KD), mDISCOUNT(I_DISCOUNT)
+{
     mRequested = false;
 }
 
@@ -47,7 +51,7 @@ bool LineTraceController::start() {
     mRequested = true;
     // 課題 カラーセンサーのキャリブレーション結果を反映する
     // そもそも黒以外の色にも対応させる必要がある。
-    mTargetValue = 17;
+    mTargetValue = 20;
     mDeviation = 0;
     mIntegral = 0;
     mOutput = 0;

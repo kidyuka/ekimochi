@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-extern void scheduler_task(intptr_t exinf);
+extern void scheduler_task();
 extern void scheduler_debug_task(intptr_t exinf);
 
 #ifdef __cplusplus

@@ -4,7 +4,7 @@
 
 #include "Util.h"
 #include "Logger.h"
-
+#include "Scheduler.h"
 #define DEBUG
 
 #ifdef DEBUG
@@ -14,5 +14,5 @@
 #endif
 
 void main_task(intptr_t unused) {
-    DebugLog.write("hello world!\n");
+    scheduler_task();
 }

@@ -4,5 +4,8 @@
 #include "Util.h"
 
 void sch_initilize_hook() {
-    devicecontroller_initilize();
+    device_controller_initilize();
+    device_sensor_initilize();
+
+    device_task_start();
 }

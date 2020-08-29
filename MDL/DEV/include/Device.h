@@ -7,13 +7,20 @@
 extern "C" {
 #endif
 
-extern void	devicecontroller_task(intptr_t exinf);
+extern void	device_task(intptr_t exinf);
+
+extern void	device_sensor_task(intptr_t exinf);
+
+extern void	device_controller_task(intptr_t exinf);
 
 #ifdef __cplusplus
 }
 
-extern void devicecontroller_task_start() ;
-extern void devicecontroller_initilize();
+extern void device_controller_initilize();
+
+extern void device_sensor_initilize();
+
+extern void device_task_start();
 
 #endif // __cplusplus
 #endif // DEVICECONTROLLER_H

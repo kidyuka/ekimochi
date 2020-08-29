@@ -12,7 +12,7 @@
 #define TREAD_SIZE (145)
 
 // 最も急なカーブの回転半径を設定する(mm)
-#define DRIVECTL_CURVE_MAX 200
+#define DRIVECTL_CURVE_MAX 250
 // 最も緩いカーブの回転半径を設定する(mm)
 // ※直線走行時の車体方向調整の最小値を想定
 #define DRIVECTL_CURVE_MIN 800

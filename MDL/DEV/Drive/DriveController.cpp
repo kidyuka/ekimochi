@@ -7,6 +7,7 @@
 
 #define PI (3.14)
 #define WHEEL_CIRCUMFERENCE ((float)WHEEL_SIZE * PI)
+#define LEN2RAD(L) ((L) / WHEEL_CIRCUMFERENCE * 360.0)
 
 DriveController gDriveController;
 
@@ -30,29 +31,41 @@ void DriveController::runTask() {
         gRightMotor.setTargetSpeed(0, true);
 
     } else if(mReqTurn != 0 ) {
+        int rad = LEN2RAD(mSpeed);
         if(mReqTurn > 0) {
-            gLeftMotor.setTargetSpeed(mSpeed);
-            gRightMotor.setTargetSpeed(-mSpeed);
+            gLeftMotor.setTargetSpeed(rad);
+            gRightMotor.setTargetSpeed(-rad);
         } else {
-            gLeftMotor.setTargetSpeed(-mSpeed);
-            gRightMotor.setTargetSpeed(mSpeed);
+            gLeftMotor.setTargetSpeed(-rad);
+            gRightMotor.setTargetSpeed(rad);
         }     
 
     } else if(mSteer == DRIVECTL_STRAIGHT) {
-        gLeftMotor.setTargetSpeed(mSpeed);
-        gRightMotor.setTargetSpeed(mSpeed);
+        int rad = LEN2RAD(mSpeed);
+        gLeftMotor.setTargetSpeed(rad);
+        gRightMotor.setTargetSpeed(rad);
 
     } else {
         int steer = abs(mSteer);
-        if(steer < TREAD_SIZE/2) {
-            //片側の車輪を固定して回転する要求だとみなす
-            steer = TREAD_SIZE/2;
-        }
-
         float radSpeed = (float)mSpeed / (float)steer;
-        int s1 = ((steer - TREAD_SIZE/2) * radSpeed) / WHEEL_CIRCUMFERENCE * 360;
-        int s2 = ((steer + TREAD_SIZE/2) * radSpeed) / WHEEL_CIRCUMFERENCE * 360;
-        
+        #if 0
+            if(steer < TREAD_SIZE/2) {
+                //片側の車輪を固定して回転する要求だとみなす
+                steer = TREAD_SIZE/2;
+            }
+            // 車軸中央の速度を維持するように制御
+            int s1 = ((steer - TREAD_SIZE/2) * radSpeed) / WHEEL_CIRCUMFERENCE * 360;
+            int s2 = ((steer + TREAD_SIZE/2) * radSpeed) / WHEEL_CIRCUMFERENCE * 360;
+        #else
+            if(steer < TREAD_SIZE) {
+                //片側の車輪を固定して回転する要求だとみなす
+                steer = TREAD_SIZE;
+            }
+            // カーブの外側の車輪の速度を維持するように制御（車体速度は減速することになる）
+            int s1 = LEN2RAD((steer - TREAD_SIZE) * radSpeed);
+            int s2 = LEN2RAD(mSpeed);
+        #endif
+
         if(mSteer > 0) {
             gLeftMotor.setTargetSpeed(s2);
             gRightMotor.setTargetSpeed(s1);

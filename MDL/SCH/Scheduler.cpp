@@ -1,6 +1,6 @@
 #include "Scheduler.h"
 
-void scheduler_task(intptr_t exinf) {
+void scheduler_task() {
     sch_initilize_hook();
 
     sta_cyc(SCH_DEBUG_TASK);
