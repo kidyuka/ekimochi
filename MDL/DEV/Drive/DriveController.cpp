@@ -16,20 +16,6 @@ bool DriveController::mReqBrake = false;
 int  DriveController::mSpeed = 0;
 int  DriveController::mSteer = 0;
 
-void drivecontroller_task_start() {
-    act_tsk(DRIVECONTROLLER_TASK);
-}
-
-void drivecontroller_task(intptr_t exinf) {
-    while(true) {
-        gLineTraceController.runTask();
-        gDriveController.runTask();
-        gLeftMotor.runTask();
-        gRightMotor.runTask();
-        tslp_tsk(25 * 1000);
-    }
-}
-
 DriveController::DriveController() {
     mRequested = false;
 }

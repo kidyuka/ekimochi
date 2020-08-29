@@ -1,0 +1,7 @@
+{
+    DebugLog => {
+        type => "text",
+        size => 1024 * 256,
+    },
+    
+};

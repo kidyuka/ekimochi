@@ -18,8 +18,6 @@ static void button_clicked_handler(intptr_t button) {
         //gDriveController.setSteer(0);
         break;
     case BACK_BUTTON:
-        drivecontroller_task_start();
-        colorsensor_task_start();
         break;
     case LEFT_BUTTON:
         gLineTraceController.stop(false);

@@ -6,16 +6,36 @@ use autodie;
 use POSIX qw(floor ceil);
 use File::Basename;
 
-chdir(dirname($0));
-my $page_size = 8 * 1024;
-
 ############## コンフィグ項目##############
 # マップ先メモリの先頭アドレスを設定する
 my $mmap_address = 0x50000000;
 my $mmap_maxsize = 0x10000000;
 my $logdir = "log";
+my $page_size = 8 * 1024;
 #########################################
 my $mmap_maxaddr = $mmap_address + $mmap_maxsize;
+
+if(@ARGV < 1) {
+    die "コンフィグファイルが指定されていない";
+}
+
+my %define;
+foreach my $item (@ARGV) {
+    # コンフィグファイルから読み出し
+    open my $file, '<', $item
+        or die "cat not open config file.";
+    my $src = do { local $/;  <$file>; };
+    close $file;
+
+    my $def = eval($src);
+    if($@) {
+        die "logコンフィグファイルが解析できない:$@\n";
+    }
+    @define{ keys %$def } = values %$def;
+}
+
+#以降の処理は、スクリプトファイルがあるフォルダを基準に行う
+chdir(dirname($0));
 
 # 使用可能な型の情報
 my %type_list = ("int8_t" => 1, "uint8_t" => 1, "int16_t" => 2,
@@ -40,18 +60,6 @@ $implement
 
 EOS
 
-
-# コンフィグファイルから読み出し
-open my $file, '<', 'UTIL/cfg/logger_cfg.pl'
-    or die "cat not open config file.";
-my $src = do { local $/;  <$file>; };
-close $file;
-
-my $define = eval($src);
-if($@) {
-    die "logコンフィグファイルが解析できない:$@\n";
-}
-
 open my $c_file, "> UTIL/cfg/logger_cfg.cpp"
     or die "cat not open file for writing.";
 
@@ -75,7 +83,7 @@ print $init_file "mkdir -p log/\n";
 print $c_file qq(#include "Logger.h"\n\n);
 
 # 各定義を読み出して出力する。
-while(my ($key, $def) = each(%$define)) {
+while(my ($key, $def) = each(%define)) {
     if($def->{type} eq "text") {
         gen_text_log_define($key, $def);
     } elsif($def->{type} eq "binary") {
@@ -110,7 +118,7 @@ sub gen_text_log_define {
     print  $h_file "extern TextLogger $key;\n";
     printf $c_file "TextLogger $key(0x%x, 0x%x);\n\n", $addr, $size;
     printf $mmap_file "MMAP, 0x%x, $logdir/$key.bin\n", $addr;
-    printf $init_file "dd if=/dev/zero of=log/$key.bin bs=8K count=$count\n";
+    printf $init_file "dd if=/dev/zero of=log/$key.bin bs=$page_size count=$count\n";
 }
 
 sub gen_binary_log_define {

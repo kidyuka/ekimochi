@@ -19,6 +19,12 @@ MKFILE_DIR := $(APPLDIR)
 
 # APLLDIRは初回呼び出し時しか定義されていないので、初回呼び出しか否かの判定に利用する
 ifdef APPLDIR
+	ifdef img
+		# make img=appname ではターゲットの指定をしたことにならない。
+		# 入力の便利のため、imgに値がある場合は、ターゲットにする。
+		.DEFAULT_GOAL := img
+	endif
+
 	# サブディレクトリの cfgファイルを抽出
 	_APPCFGS := $(shell find $(APPLDIR) ! -name app.cfg -name *.cfg -printf '%P ')
 
@@ -27,7 +33,8 @@ ifdef APPLDIR
 	_DUMMY := $(foreach item, $(_APPCFGS), $(shell echo 'INCLUDE("'$(item)'");' >> $(APPLDIR)/subapp.list))
 
 	# log出力用のクラスを自動生成
-	_DUMMY := $(shell perl $(APPLDIR)/gen-logger-cfg.pl)
+	_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
+	_DUMMY := $(shell perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS))
 endif
 
 # 上記ビルド処理概要の「８」では APPLDIR 未定義になっている
@@ -40,7 +47,6 @@ _CXXSRCS := $(shell find $(APPLDIR) ! -name app.cpp -name \*.cpp -printf '%P ')
 _CSRCS   := $(shell find $(APPLDIR) ! -name app.c   -name \*.c   -printf '%P ')
 _CXXOBJS := $(_CXXSRCS:%.cpp=%.o)
 _COBJS   := $(_CSRCS:%.c=%.o)
-
 
 ifdef USE_CXX
 	APPL_CXXOBJS += $(_CXXOBJS)
