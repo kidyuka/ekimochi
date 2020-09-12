@@ -2,5 +2,6 @@ ROM, 0x00000000, 512
 RAM, 0x00200000, 512
 RAM, 0x05FF7000, 10240
 RAM, 0x07FF7000, 10240
-MMAP, 0x50000000, log/ColorSensorLog.bin
-MMAP, 0x50004000, log/DebugLog.bin
+MMAP, 0x30000000, log/OdoLog.bin
+MMAP, 0x30006000, log/DebugLog.bin
+MMAP, 0x30046000, log/ColorSensorLog.bin

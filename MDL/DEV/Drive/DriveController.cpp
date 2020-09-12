@@ -5,7 +5,6 @@
 #include "MotorController.h"
 #include "Util.h"
 
-#define PI (3.14)
 #define WHEEL_CIRCUMFERENCE ((float)WHEEL_SIZE * PI)
 #define LEN2RAD(L) ((L) / WHEEL_CIRCUMFERENCE * 360.0)
 

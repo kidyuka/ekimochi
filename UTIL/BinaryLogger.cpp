@@ -8,6 +8,7 @@ BinaryLogger::BinaryLogger(uint32_t addr, uint32_t size) {
     mPtr  = (uint8_t*)addr;
     mPtr += 4;
     mSize = size;
+    syslog_printf(LOG_NOTICE, "binary-log: 0x%x(%d)", addr, size);
 }
 
 BinaryLogger::~BinaryLogger() {

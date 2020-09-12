@@ -8,7 +8,7 @@ use File::Basename;
 
 ############## コンフィグ項目##############
 # マップ先メモリの先頭アドレスを設定する
-my $mmap_address = 0x50000000;
+my $mmap_address = 0x30000000;
 my $mmap_maxsize = 0x10000000;
 my $logdir = "log";
 my $page_size = 8 * 1024;

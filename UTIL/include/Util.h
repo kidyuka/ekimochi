@@ -38,4 +38,10 @@ inline void memcpy(uint8_t* dest, const uint8_t* src, uint32_t size) {
     }
 }
 
+#define PI 3.1415926f
+
+float sin(float rad);
+float cos(float rad);
+float getDistance(float rad);
+
 #endif // UTIL_H

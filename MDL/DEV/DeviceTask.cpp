@@ -4,6 +4,7 @@
 #include "MotorController.h"
 #include "ColorSensor.h"
 #include "Button.h"
+#include "Odometor.h"
 #include "Util.h"
 
 void device_controller_initilize() {
@@ -20,6 +21,9 @@ void device_sensor_task(intptr_t exinf) {
 
     if(count % 10 == 0)
         colorsensor_task();
+
+    if(count % 10 == 0)
+        gOdometor.runTask();
 
     count++;
 }

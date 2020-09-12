@@ -5,6 +5,7 @@
 TextLogger::TextLogger(uint32_t addr, uint32_t size) {
     mPtr = mHead = (char*)addr;
     mSize = size;
+    syslog_printf(LOG_NOTICE, "text-log: 0x%x(%d)", addr, size);
 }
 
 TextLogger::~TextLogger() {
