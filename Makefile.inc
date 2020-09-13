@@ -33,8 +33,8 @@ ifdef APPLDIR
 	_DUMMY := $(foreach item, $(_APPCFGS), $(shell echo 'INCLUDE("'$(item)'");' >> $(APPLDIR)/subapp.list))
 
 	# log出力用のクラスを自動生成
-	_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
-	_DUMMY := $(shell perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS))
+	#_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
+	#_DUMMY := $(shell perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS))
 endif
 
 # 上記ビルド処理概要の「８」では APPLDIR 未定義になっている
@@ -54,3 +54,30 @@ ifdef USE_CXX
 else
 	APPL_COBJS += $(_COBJS)
 endif
+
+_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
+$(APPLDIR)/UTIL/cfg/logger_cfg.cpp: $(_LOGCFGS)
+	$(call print_cmd, "GEN_LOGCFG", $<)
+	perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS)
+
+print: appdir
+ifdef log
+	@perl $(APPLDIR)/unpack-binary-log.pl $(log) $(shell find $(APPLDIR) -name \*.logcfg )
+else
+	@echo "make print log=<logname>"
+endif
+
+logging: appdir
+	@if [ -n $$(which start-etrobo-simulator) ]; then \
+		start-etrobo-simulator; \
+	fi \
+
+	@if [ -e $(APPLDIR)/init_mmap.sh ]; then \
+		bash $(APPLDIR)/init_mmap.sh; \
+	fi
+
+	athrill2 -c1 -m $(APPLDIR)/memory_mmap.txt -d ../common/device_config.txt -t -1 asp | tee log.txt
+
+	@if [ -n $$(which start-etrobo-simulator) ]; then \
+		stop-etrobo-simulator; \
+	fi

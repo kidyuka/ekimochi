@@ -18,10 +18,10 @@ extern "C" {
 }
 
 struct OdoInfo {
-    uint32_t x;
-    uint32_t y;
-    float    direction;
-    SYSTIM   time;
+    float  x;
+    float  y;
+    float  direction;
+    SYSTIM time;
 };
 
 class Odometor {

@@ -3,5 +3,5 @@ RAM, 0x00200000, 512
 RAM, 0x05FF7000, 10240
 RAM, 0x07FF7000, 10240
 MMAP, 0x30000000, log/OdoLog.bin
-MMAP, 0x30006000, log/DebugLog.bin
-MMAP, 0x30046000, log/ColorSensorLog.bin
+MMAP, 0x30008000, log/DebugLog.bin
+MMAP, 0x30048000, log/ColorSensorLog.bin

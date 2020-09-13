@@ -3,9 +3,10 @@
         type => "binary",
         size => 200 * 10,  #毎秒10回で200秒
         data => [
-            x => "uint32_t",
-            y => "uint32_t",
+            x => "float",
+            y => "float",
             direction => "float",
+            time => "uint32_t",
         ],
     },
 }

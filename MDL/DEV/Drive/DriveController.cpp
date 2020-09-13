@@ -1,3 +1,4 @@
+#include "Device_Cfg.h"
 #include "DriveController.h"
 #include "cfg/DriveController_cfg.h"
 #include "LineTraceController.h"
@@ -25,11 +26,11 @@ void DriveController::runTask() {
         return ;
     }
 
-    if(mReqBrake == true) {
-        gLeftMotor.setTargetSpeed(0, true);
-        gRightMotor.setTargetSpeed(0, true);
+    if(mSpeed == 0) {
+        gLeftMotor.setTargetSpeed(0, mReqBrake);
+        gRightMotor.setTargetSpeed(0, mReqBrake);
 
-    } else if(mReqTurn != 0 ) {
+    } else if(mReqTurn != 0) {
         int rad = LEN2RAD(mSpeed);
         if(mReqTurn > 0) {
             gLeftMotor.setTargetSpeed(rad);
@@ -37,7 +38,7 @@ void DriveController::runTask() {
         } else {
             gLeftMotor.setTargetSpeed(-rad);
             gRightMotor.setTargetSpeed(rad);
-        }     
+        }
 
     } else if(mSteer == DRIVECTL_STRAIGHT) {
         int rad = LEN2RAD(mSpeed);
@@ -88,7 +89,6 @@ bool DriveController::stop(bool motor_brake) {
     mReqBrake = motor_brake;
     mReqTurn = 0;
     mSpeed = 0;
-    mSteer = 0;
     return true;
 }
 

@@ -8,7 +8,7 @@
 #define MOTOR_PID_KP 0.15
 #define MOTOR_PID_KI 0.00
 #define MOTOR_PID_KD 0.00
-#define MOTOR_INIT_PWM 20
+#define MOTOR_INIT_PWM 10
 #define MOTOR_DESCOUT 0.5
 
 /**
@@ -72,13 +72,24 @@ void MotorController::runTask() {
     // 現在時間を得る
     get_tim(&now);
 
+    if(count != mPrevCount) {
+        // モータ角の現在値と前回値の差を得る
+        variation = count - mPrevCount;
+        // 前回と現在の経過時間(秒)を得る (get_tim は第3世代ではマイクロ秒で得られる)
+        elapsed = (float)(now - mPrevTime) / (1000 * 1000);
+        // 現在の回転速度を得る(1秒あたりに変換)
+        mSpeed = (float)variation / elapsed;
+    }
+
     if(mTargetSpeed == 0) {
         // 速度0 が要求値の場合はモータを停止
         if(mRunning) {
             ev3_motor_stop(mPort, mReqBrake);
             mRunning = false;
             mReqBrake = false;
+            mOutput = 0;
         }
+
     } else if(mRunning == false) {
         // モータをまだ動かしていない場合は、初速設定に基づいてPWM値を設定
         // (下記の出力PWM値の調整処理が、モータが動いていることを前提としているため)
@@ -88,12 +99,6 @@ void MotorController::runTask() {
 
     } else {
         if(count != mPrevCount) {
-            // モータ角の現在値と前回値の差を得る
-            variation = count - mPrevCount;
-            // 前回と現在の経過時間(秒)を得る (get_tim は第3世代ではマイクロ秒で得られる)
-            elapsed = (float)(now - mPrevTime) / (1000 * 1000);
-            // 回転速度を得る(1秒あたりに変換)
-            mSpeed = (float)variation / elapsed;
             // 目標値との差でPWM値を変更
             this->controlPWM(mTargetSpeed - mSpeed);
         } else {

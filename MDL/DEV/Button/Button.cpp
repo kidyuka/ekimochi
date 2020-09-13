@@ -5,14 +5,18 @@
 #include "ColorSensor.h"
 
 static void button_clicked_handler(intptr_t button) {
-    static uint32_t left = 400;
-    static uint32_t right = 400;
-    
+    static bool linetrace = false;
+
     switch(button) {
     case ENTER_BUTTON:
-
-        gLineTraceController.setSpeed(400);
-        gLineTraceController.start();
+        if(linetrace == false) {
+            gLineTraceController.setSpeed(400);
+            gLineTraceController.start();
+            linetrace = true;
+        } else {
+            gLineTraceController.stop(false);
+            linetrace = false;
+        }
         //gDriveController.reqTurn(100);
         //gDriveController.setSpeed(500);
         //gDriveController.setSteer(0);

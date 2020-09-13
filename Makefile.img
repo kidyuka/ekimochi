@@ -781,6 +781,7 @@ $(APPL_COBJS:$(OBJDIR)/%.o=%.s): %.s: %.c
 $(APPL_CXXOBJS): $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	@mkdir -p $(DEPDIR)/$(*D)
+	$(call print_cmd, "CXX", $<)
 	$(CXX) -c -o $@ -MD -MP -MF $(DEPDIR)/$*.d $(CFLAGS) $(APPL_CFLAGS) $<
 
 $(APPL_CXXOBJS:$(OBJDIR)/%.o=%.s): %.s: %.cpp

@@ -2,13 +2,13 @@
 #include "Util.h"
 #include <stdarg.h>
 
-BinaryLogger::BinaryLogger(uint32_t addr, uint32_t size) {
+BinaryLogger::BinaryLogger(const char* logname, uint32_t addr, uint32_t size) {
     mHead = (uint32_t*)addr;
     *mHead = 0;
     mPtr  = (uint8_t*)addr;
     mPtr += 4;
     mSize = size;
-    syslog_printf(LOG_NOTICE, "binary-log: 0x%x(%d)", addr, size);
+    syslog_printf(LOG_NOTICE, "binary-log: %s: 0x%x(%d)", logname, addr, size);
 }
 
 BinaryLogger::~BinaryLogger() {

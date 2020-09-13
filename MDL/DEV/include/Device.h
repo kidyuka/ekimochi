@@ -1,5 +1,5 @@
-#ifndef DEVICECONTROLLER_H
-#define DEVICECONTROLLER_H
+#ifndef DEVICE_H
+#define DEVICE_H
 
 #include "ev3api.h"
 
@@ -23,4 +23,4 @@ extern void device_sensor_initilize();
 extern void device_task_start();
 
 #endif // __cplusplus
-#endif // DEVICECONTROLLER_H
+#endif // DEVICE_H

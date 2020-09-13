@@ -45,7 +45,7 @@ my %type_list = ("int8_t" => 1, "uint8_t" => 1, "int16_t" => 2,
 my $template_binary_class_declear = <<'EOS';
 class _$key : public BinaryLogger {
 public:
-    _$key(uint32_t addr) : BinaryLogger(addr, $size) {}
+    _$key(uint32_t addr) : BinaryLogger(\"$key\", addr, $size) {}
     bool write($arguments);
 };
 
@@ -116,7 +116,7 @@ sub gen_text_log_define {
     my $addr  = alloc_memory($size);
 
     print  $h_file "extern TextLogger $key;\n";
-    printf $c_file "TextLogger $key(0x%x, 0x%x);\n\n", $addr, $size;
+    printf $c_file "TextLogger $key(\"$key\", 0x%x, 0x%x);\n\n", $addr, $size;
     printf $mmap_file "MMAP, 0x%x, $logdir/$key.bin\n", $addr;
     printf $init_file "dd if=/dev/zero of=log/$key.bin bs=$page_size count=$count\n";
 }

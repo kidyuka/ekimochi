@@ -2,10 +2,10 @@
 #include "Util.h"
 #include <stdarg.h>
 
-TextLogger::TextLogger(uint32_t addr, uint32_t size) {
+TextLogger::TextLogger(const char* logname, uint32_t addr, uint32_t size) {
     mPtr = mHead = (char*)addr;
     mSize = size;
-    syslog_printf(LOG_NOTICE, "text-log: 0x%x(%d)", addr, size);
+    syslog_printf(LOG_NOTICE, "text-log: %s: 0x%x(%d)", logname, addr, size);
 }
 
 TextLogger::~TextLogger() {
