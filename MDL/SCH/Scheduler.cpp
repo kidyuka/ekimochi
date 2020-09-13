@@ -2,8 +2,7 @@
 
 void scheduler_task() {
     sch_initilize_hook();
-
-    sta_cyc(SCH_DEBUG_TASK);
+    act_tsk(SCH_DEBUG_TASK);
 }
 
 void scheduler_debug_task(intptr_t exinf) {

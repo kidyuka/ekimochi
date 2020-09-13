@@ -24,6 +24,8 @@ struct OdoInfo {
     SYSTIM time;
 };
 
+extern float get_distance(const OdoInfo* p1, const OdoInfo* p2);
+
 class Odometor {
 private:
     int32_t mLeft;

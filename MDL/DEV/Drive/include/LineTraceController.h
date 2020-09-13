@@ -34,13 +34,9 @@ public:
     bool start();
 
     // @brief モータの回転を即座に止めるか、惰性で回転させるままにするかを指定
-    // @param motor_brake false:即時停止 true:惰性
-    bool stop(bool motor_brake);
+    bool stop();
 
-    // @brief 制御の基準速度を指定する。 
-    // @param speed 1秒あたり進む距離をmmで指定
-    void setSpeed(int speed) ;
-
+    // ライントレースタスクの本体
     void runTask();
 };
 

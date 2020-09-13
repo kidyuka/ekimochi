@@ -15,7 +15,7 @@ bool DriveController::mRequested = false;
 int  DriveController::mReqTurn = 0;
 bool DriveController::mReqBrake = false;
 int  DriveController::mSpeed = 0;
-int  DriveController::mSteer = 0;
+int  DriveController::mSteer = DRIVECTL_STRAIGHT;
 
 DriveController::DriveController() {
     mRequested = false;

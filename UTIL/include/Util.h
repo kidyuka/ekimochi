@@ -42,6 +42,7 @@ inline void memcpy(uint8_t* dest, const uint8_t* src, uint32_t size) {
 
 float sin(float rad);
 float cos(float rad);
+float sqrt(float val);
 float getDistance(float rad);
 
 #endif // UTIL_H

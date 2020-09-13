@@ -56,18 +56,10 @@ bool LineTraceController::start() {
     mIntegral = 0;
     mOutput = 0;
 
-    //gDriveController.start();
     return true;
 }
 
-bool LineTraceController::stop(bool motor_brake) {
+bool LineTraceController::stop() {
     mRequested = false;
-    gDriveController.stop(motor_brake);
     return true;
-}
-
-void LineTraceController::setSpeed(int speed) {
-    mRequested = true;
-    gDriveController.setSpeed(speed);
-    return;
 }

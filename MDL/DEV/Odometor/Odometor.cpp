@@ -38,3 +38,9 @@ void Odometor::runTask() {
     mLeft = left;
     mRight = right;
 }
+
+float get_distance(const OdoInfo* p1, const OdoInfo* p2) {
+    float x = p2->x - p1->x;
+    float y = p2->y - p2->y;
+    return sqrt(x * x + y * y);
+}
