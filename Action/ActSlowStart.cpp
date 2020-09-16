@@ -3,9 +3,9 @@
 #include "DriveController.h"
 #include "Util.h"
 
-#define START    70
+#define START    100
 #define TARGET   400
-#define RATE     10
+#define RATE     50
 #define INTERVAL 50
 
 bool ActSlowStart::exec() {

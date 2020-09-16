@@ -15,6 +15,7 @@ Odometor::Odometor() {
     mOdo.x = 0;
     mOdo.y = 0;
     mOdo.direction = 0;
+    mOdo.forward = 0;
     gLeftMotor.getCount(&mLeft, &mOdo.time);
     gRightMotor.getCount(&mRight, &mOdo.time);
 }
@@ -22,7 +23,7 @@ Odometor::Odometor() {
 void Odometor::runTask() {
     int32_t left, right;
     float   diffL, diffR;
-    float   forward;
+    float   forward, direction;
 
     gLeftMotor.getCount(&left, &mOdo.time);
     gRightMotor.getCount(&right,&mOdo.time);
@@ -31,15 +32,17 @@ void Odometor::runTask() {
     diffR = RAD2LEN(right - mRight);
 
     forward = (diffL + diffR) / 2.0;
+    direction = (diffR - diffL) / TREAD_SIZE;
     mOdo.x += forward * cos(mOdo.direction);
     mOdo.y += forward * sin(mOdo.direction);
-    mOdo.direction += (diffR - diffL) / TREAD_SIZE;
+    mOdo.direction +=  direction ;
+    mOdo.forward += forward;
 
     mLeft = left;
     mRight = right;
 }
 
-float get_distance(const OdoInfo* p1, const OdoInfo* p2) {
+float get_distance(const OdoData* p1, const OdoData* p2) {
     float x = p2->x - p1->x;
     float y = p2->y - p2->y;
     return sqrt(x * x + y * y);

@@ -5,6 +5,7 @@
 #include "ColorSensor.h"
 #include "Button.h"
 #include "Odometor.h"
+#include "ColorSensor.h"
 #include "Util.h"
 
 void device_controller_initilize() {
@@ -20,9 +21,9 @@ void device_sensor_task(intptr_t exinf) {
     static uint32_t count = 0;
 
     if(count % 10 == 0)
-        colorsensor_task();
+        gColorSensor.runTask();
 
-    if(count % 10 == 0)
+    if(count % 1 == 0)
         gOdometor.runTask();
 
     count++;

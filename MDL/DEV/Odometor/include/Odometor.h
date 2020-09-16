@@ -17,25 +17,26 @@ extern "C" {
 #ifdef __cplusplus
 }
 
-struct OdoInfo {
+struct OdoData {
     float  x;
     float  y;
     float  direction;
+    float  forward;
     SYSTIM time;
 };
 
-extern float get_distance(const OdoInfo* p1, const OdoInfo* p2);
+extern float get_distance(const OdoData* p1, const OdoData* p2);
 
 class Odometor {
 private:
     int32_t mLeft;
     int32_t mRight;
-    OdoInfo mOdo;
+    OdoData mOdo;
 
 public:
     Odometor();
 
-    void get(OdoInfo* info) {
+    void get(OdoData* info) {
         *info = mOdo;
     }
     

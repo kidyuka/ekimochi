@@ -56,7 +56,7 @@ void MotorController::initilize() {
 }
 
 void MotorController::debug() {
-    DebugLog.write(
+    WRITE_LOG(DebugLog,
         "Port: %d, TargetSpeed: %d, Speed: %d, PWM: %f\n",
         mPort, mTargetSpeed, mSpeed, mOutput);
 }

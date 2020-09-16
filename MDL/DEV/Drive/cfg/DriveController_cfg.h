@@ -9,7 +9,7 @@
 
 // ライントレースのPID
 #define LINETRACE_PID_KP 2.5
-#define LINETRACE_PID_KI 6.0
+#define LINETRACE_PID_KI 4.5
 #define LINETRACE_PID_KD 6.0
 #define LINETRACE_PID_DISCOUNT 0.4
 

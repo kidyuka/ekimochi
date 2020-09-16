@@ -43,22 +43,23 @@ ifdef APPLDIRS
 endif
 
 # サブディレクトリのソースファイルを抽出する
-_CXXSRCS := $(shell find $(APPLDIR) ! -name app.cpp -name \*.cpp -printf '%P ')
+_CXXSRCS := $(shell find $(APPLDIR) ! -name app.cpp ! -name logger_cfg.cpp -name \*.cpp -printf '%P ')
 _CSRCS   := $(shell find $(APPLDIR) ! -name app.c   -name \*.c   -printf '%P ')
 _CXXOBJS := $(_CXXSRCS:%.cpp=%.o)
 _COBJS   := $(_CSRCS:%.c=%.o)
+_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
 
-ifdef USE_CXX
-	APPL_CXXOBJS += $(_CXXOBJS)
-	APPL_COBJS   += $(_COBJS)
-else
-	APPL_COBJS += $(_COBJS)
+ifdef memmap_log 
+	CFLAGS += -DMEMMAP_LOG
+	APPL_CXXOBJS := /UTIL/cfg/logger_cfg.o $(APPL_CXXOBJS)
 endif
 
-_LOGCFGS := $(shell find $(APPLDIR) -name \*.logcfg )
+APPL_CXXOBJS += $(_CXXOBJS)
+APPL_COBJS   += $(_COBJS)
+
 $(APPLDIR)/UTIL/cfg/logger_cfg.cpp: $(_LOGCFGS)
 	$(call print_cmd, "GEN_LOGCFG", $<)
-	perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS)
+	@perl $(APPLDIR)/gen-logger-cfg.pl $(_LOGCFGS)
 
 print: appdir
 ifdef log

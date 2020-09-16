@@ -3,6 +3,8 @@
 
 #include "ev3api.h"
 
+#ifdef MEMMAP_LOG
+
 class TextLogger {
 private:
     char* mHead;
@@ -27,6 +29,11 @@ public:
     ~BinaryLogger();
 };
 
+#define WRITE_LOG(logname, ...) logname.write(__VA_ARGS__)
 #include "../cfg/logger_cfg.inc"
+
+#else
+#define WRITE_LOG(logname, ...)
+#endif //MEMMAP_LOG
 
 #endif

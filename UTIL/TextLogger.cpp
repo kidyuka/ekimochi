@@ -1,3 +1,5 @@
+#ifdef MEMMAP_LOG
+
 #include "Logger.h"
 #include "Util.h"
 #include <stdarg.h>
@@ -5,7 +7,6 @@
 TextLogger::TextLogger(const char* logname, uint32_t addr, uint32_t size) {
     mPtr = mHead = (char*)addr;
     mSize = size;
-    syslog_printf(LOG_NOTICE, "text-log: %s: 0x%x(%d)", logname, addr, size);
 }
 
 TextLogger::~TextLogger() {
@@ -29,3 +30,4 @@ bool TextLogger::write(const char* format, ...) {
     return (mHead + mSize > mPtr);
 }
 
+#endif // MEMMAP_LOG

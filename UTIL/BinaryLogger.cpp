@@ -1,3 +1,5 @@
+#ifdef MEMMAP_LOG
+
 #include "Logger.h"
 #include "Util.h"
 #include <stdarg.h>
@@ -30,3 +32,5 @@ bool BinaryLogger::_write(const void* src, uint32_t size) {
 
     return true;
 }
+
+#endif // MEMMAP_LOG

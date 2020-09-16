@@ -80,6 +80,7 @@ RAM, 0x07FF7000, 10240
 
 print $init_file "mkdir -p log/\n";
 
+print  $c_file "#ifdef MEMMAP_LOG\n";
 print $c_file qq(#include "Logger.h"\n\n);
 
 # 各定義を読み出して出力する。
@@ -92,6 +93,8 @@ while(my ($key, $def) = each(%define)) {
         die "$key の定義で、unknown 'type'";
     }
 }
+
+print  $c_file "#endif //MEMMAP_LOG\n";
 
 close($c_file);
 close($h_file);
@@ -151,11 +154,13 @@ sub gen_binary_log_define {
 
     printf $mmap_file "MMAP, 0x%x, $logdir/$key.bin\n", $addr;
     printf $init_file "dd if=/dev/zero of=log/$key.bin bs=$page_size count=$count\n";
+
     print  $c_file eval(qq("$template_binary_class_implement"));
     if($@) {
         die $@;
     }
     printf $c_file "_$key $key(0x%x);\n\n", $addr;
+
 }
 
 sub check_binary_log_define {
